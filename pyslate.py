@@ -1,8 +1,6 @@
 # Pyslate
 # By Pitamar
-# For TSG Linguists
-
-# IF YOU ARE READING THIS, DON'T JUDGE ME, THIS WAS THE FIRST USEFUL APP I DEVELOPED. THANKS <3
+# For Awesome Linguists
 
 import datetime
 import os
@@ -18,6 +16,7 @@ from translate import Translator
 
 
 # basic configuration
+
 version_num = '1.27'
 
 original_cwd = os.getcwd()
@@ -33,6 +32,7 @@ logging.disable(logging.CRITICAL) # <-- Comment out to see logging during run
 
 
 # functions
+
 def get_sentences_web(source, sep1, sep2):
     """
     Return a list of sentences from a given web source
@@ -143,7 +143,7 @@ def assign_from_lang():
     return from_lang
 
 
-def pyslate_web(): ################################################################################################################################################
+def pyslate_web():
     """
     Run the whole process of:
     get_sentences_web, clean_sentences_web, get_translations
@@ -164,7 +164,7 @@ def pyslate_web(): #############################################################
     sh['B9'].value = src_lang.get()
     sh['D9'].value = 'תרגום ידני' if (need_heb.get() == 0 and need_eng.get() == 0) else 'תיקון תרגום מכונה'
 
-    update_status('Getting sentences...') ################################################
+    update_status('Getting sentences...')
     try:
         sentences = get_sentences_web(source, sep1.get(), sep2.get())
         sentences = clean_sentences_web(sentences)
@@ -173,7 +173,7 @@ def pyslate_web(): #############################################################
         update_status('Sorry, couldn\'t get sentences from the source :(')
         return 0
 
-    if need_heb.get() == True: ###########################################################
+    if need_heb.get() == True:
         update_status('Translating to Hebrew...')
         try:
             translations = get_translations(sentences, from_lang, 'he')
@@ -183,7 +183,7 @@ def pyslate_web(): #############################################################
             save_excel()
             return 0
         
-    if need_eng.get() == True: ###########################################################
+    if need_eng.get() == True:
         update_status('Translating to English...')
         try:
             translations = get_translations(sentences, from_lang, 'en')
@@ -198,14 +198,6 @@ def pyslate_web(): #############################################################
     update_status('Your file is ready! :)')
     
     return 1
-
-
-
-
-
-
-
-
 
 
 def get_sentences_xl(sheet):
@@ -239,22 +231,6 @@ def clean_sentences_xl(sentences):
     return sentences
 
 
-
-
-
-
-def translate_and_export(sentences): #### for better decomposition in the future
-    pass
-
-
-def base_and_export():
-    pass
-
-
-
-
-
-
 def pyslate_xl(source_sh):
     """
     Run the whole process of:
@@ -277,18 +253,18 @@ def pyslate_xl(source_sh):
     sh['D9'].value = 'תרגום ידני' if (need_heb.get() == 0 and need_eng.get() == 0) else 'תיקון תרגום מכונה'
 
     
-    update_status('Getting sentences...') ################################################
-##    try:
-    sentences = get_sentences_xl(source_sh)
-    sentences = clean_sentences_xl(sentences)
-    times = get_times_xl(source_sh)
-    excel_list(sentences, sh, 'C')
-    excel_list(times, sh, 'G')
-##    except:
-##        update_status('Sorry, couldn\'t get sentences from the source :(')
-##        return 0
+    update_status('Getting sentences...')
+    try:
+        sentences = get_sentences_xl(source_sh)
+        sentences = clean_sentences_xl(sentences)
+        times = get_times_xl(source_sh)
+        excel_list(sentences, sh, 'C')
+        excel_list(times, sh, 'G')
+    except:
+        update_status('Sorry, couldn\'t get sentences from the source :(')
+        return 0
     
-    if need_heb.get() == True: ###########################################################
+    if need_heb.get() == True:
         update_status('Translating to Hebrew...')
         try:
             translations = get_translations(sentences, from_lang, 'he')
@@ -298,7 +274,7 @@ def pyslate_xl(source_sh):
             save_excel()
             return 0
         
-    if need_eng.get() == True: ###########################################################
+    if need_eng.get() == True:
         update_status('Translating to English...')
         try:
             translations = get_translations(sentences, from_lang, 'en')
@@ -315,8 +291,6 @@ def pyslate_xl(source_sh):
     return 1
     
 
-
-
 def pyslate():
     """
     Determine if the given source is a url or an excel file
@@ -332,8 +306,6 @@ def pyslate():
         source_wb = openpyxl.load_workbook(source_wb)
         source_sh = source_wb.worksheets[0]
         pyslate_xl(source_sh)
-
-
 
 
 def save_settings():
@@ -358,7 +330,7 @@ def save_settings():
         for li in settings_list:
             writer.write(str(li)+'\n')
 
-    settings_list = load_settings() ######################### <-- Update settings right after saving
+    settings_list = load_settings() # <-- settings are updated on saving
 
     try:
         os.chdir(folder.get())
@@ -366,7 +338,6 @@ def save_settings():
         settings.destroy()
     except:
         entry_save_to.insert(END, '  <-- WRONG PATH! Please fix it')
-
 
     
 def load_settings():
@@ -387,7 +358,6 @@ def load_settings():
     sep2.set(settings_list[13])
 
     return settings_list
-
 
 
 
@@ -488,7 +458,6 @@ def settings_window():
     combo_sep2.grid(row=2, column=5, padx=std_pad, pady=std_pad)
 
     button_save.grid(row=3, column=0, columnspan=6, padx=std_pad, pady=std_pad)
-
     
     # Thanks to the way Tk and tcl handle textvariables and variables,
     # they are automatically inserted to the matching widgets from
@@ -506,13 +475,6 @@ big_pad = 16
 status = StringVar()
 status.set('Waiting for instructions')
 
-#settings_icon = PhotoImage(file="settings.png")
-#settings_icon = settings_icon.subsample(40, 40)
-#about_icon = PhotoImage(file="about.png")
-#about_icon = about_icon.subsample(40, 40)
-# ^^^ tried to have icons on buttons but didn't have enough time to make it work :P
-
-
 folder = StringVar()
 name = StringVar()
 need_heb = IntVar()
@@ -521,7 +483,7 @@ src_lang = StringVar()
 sep1 = StringVar()
 sep2 = StringVar()
 
-settings_list = load_settings() ############################# <-- Load settings on root startup
+settings_list = load_settings() # <-- settings are loaded on root startup
 
 
 label_text_src = Label(root, text='Text Source:')
@@ -533,7 +495,6 @@ button_settings = Button(root, text='Settings', width=10, command=settings_windo
 button_about = Button(root, text='About', width=10, command=about)
 
 label_status = Label(root, textvariable=status)
-
 
 
 
@@ -549,9 +510,7 @@ label_status.grid(row=6, column=0, columnspan=3, padx=std_pad, pady=std_pad)
 
 
 
-
 Style().configure('big.TButton', padding=(0, 15))
-
 
 
 
